@@ -7,13 +7,15 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate
 
 ERROR_MESSAGE = _("Please enter the correct username and password "
-        "for a staff account. Note that both fields are case-sensitive.")
+                  "for a staff account. Note that both fields are case-sensitive.")
+
 
 class UserAdminAuthenticationForm(AdminAuthenticationForm):
     """
     Same as Django's AdminAuthenticationForm but allows to login
     any user who is not staff.
     """
+
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
@@ -39,15 +41,15 @@ class UserAdminAuthenticationForm(AdminAuthenticationForm):
         self.check_for_test_cookie()
         return self.cleaned_data
 
-        
+
 class UserAdmin(AdminSite):
     # Anything we wish to add or override
     login_form = UserAdminAuthenticationForm
-    
+
     def has_permission(self, request):
         return request.user.is_active
 
-    
+
 user_admin_site = UserAdmin(name='usersadmin')
 # Run user_admin_site.register() for each model we wish to register
 # for our admin interface for users
