@@ -22,19 +22,12 @@ class UserAdminAuthenticationForm(AdminAuthenticationForm):
         message = ERROR_MESSAGE
 
         if username and password:
-            self.user_cache = authenticate(username=username, password=password)
+            try:
+                self.user_cache = authenticate(username=username, password=password)
+            except:
+                # The following is for userena as it uses differnet param
+                self.user_cache = authenticate(identification=username, password=password)
             if self.user_cache is None:
-                if u'@' in username:
-                    # Mistakenly entered e-mail address instead of username? Look it up.
-                    try:
-                        user = User.objects.get(email=username)
-                    except (User.DoesNotExist, User.MultipleObjectsReturned):
-                        # Nothing to do here, moving along.
-                        pass
-                    else:
-                        if user.check_password(password):
-                            message = _("Your e-mail address is not your username."
-                                        " Try '%s' instead.") % user.username
                 raise forms.ValidationError(message)
             elif not self.user_cache.is_active:
                 raise forms.ValidationError(message)
@@ -48,6 +41,8 @@ class UserAdmin(AdminSite):
 
     def has_permission(self, request):
         return request.user.is_active
+
+
 
 
 user_admin_site = UserAdmin(name='usersadmin')
