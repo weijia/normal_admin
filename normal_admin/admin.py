@@ -25,7 +25,7 @@ class UserAdminAuthenticationForm(AdminAuthenticationForm):
             try:
                 self.user_cache = authenticate(username=username, password=password)
             except:
-                # The following is for userena as it uses differnet param
+                # The following is for userena as it uses different param
                 self.user_cache = authenticate(identification=username, password=password)
             if self.user_cache is None:
                 raise forms.ValidationError(message)
@@ -43,9 +43,6 @@ class UserAdmin(AdminSite):
         return request.user.is_active
 
 
-
-
 user_admin_site = UserAdmin(name='usersadmin')
 # Run user_admin_site.register() for each model we wish to register
 # for our admin interface for users
- 
