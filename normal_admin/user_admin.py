@@ -6,8 +6,8 @@ from django.contrib.auth import authenticate
 
 __author__ = 'weijia'
 
-ERROR_MESSAGE = _("Please enter the correct username and password "
-                  "for a staff account. Note that both fields are case-sensitive.")
+ERROR_MESSAGE = _("Please enter the correct username and password. "
+                  "Note that both fields are case-sensitive.")
 
 
 class UserAdminAuthenticationForm(AdminAuthenticationForm):
@@ -18,7 +18,7 @@ class UserAdminAuthenticationForm(AdminAuthenticationForm):
     def clean(self):
         try:
             return super(UserAdminAuthenticationForm, self).clean()
-        except:
+        except forms.ValidationError:
             username = self.cleaned_data.get('username')
             password = self.cleaned_data.get('password')
             message = ERROR_MESSAGE
@@ -36,7 +36,7 @@ class UserAdminAuthenticationForm(AdminAuthenticationForm):
             self.check_for_test_cookie()
             return self.cleaned_data
 
-    # For Django 1.8
+    # For Django 1.8, just override this function and clean will not check if the user is staff user
     def confirm_login_allowed(self, user):
         if not user.is_active:
             raise forms.ValidationError(
