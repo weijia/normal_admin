@@ -23,7 +23,19 @@ Quickstart
 
 Install normal_admin::
 
-    pip install normal_admin
+    # Can not use the following yet
+    # pip install normal_admin
+
+    clone the project instead
+
+urls.py::
+
+    obj_sys_admin_site = get_admin_site("CustomUserSite")
+    obj_sys_admin_site.register(User)
+
+
+Complex Usage
+__________
 
 admin.py::
 

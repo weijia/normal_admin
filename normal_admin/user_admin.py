@@ -3,6 +3,7 @@ from django.contrib.admin.forms import AdminAuthenticationForm
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import authenticate
+from ufs_tools.string_tools import class_name_to_low_case
 
 __author__ = 'weijia'
 
@@ -52,3 +53,15 @@ class UserAdmin(AdminSite):
 
     def has_permission(self, request):
         return request.user.is_active
+
+
+def has_permission(self, request):
+    return request.user.is_active
+
+
+def get_admin_site(admin_site_class_name):
+    admin_site_class = type(admin_site_class_name, (AdminSite,), {
+        "login_form": UserAdminAuthenticationForm,
+        "has_permission": has_permission,
+    })
+    return admin_site_class(class_name_to_low_case(admin_site_class_name))
