@@ -1,5 +1,3 @@
-from django_auth_ldap.backend import LDAPBackend
-
 __author__ = 'weijia'
 
 
